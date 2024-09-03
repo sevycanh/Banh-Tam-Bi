@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mobile_app/configs/assets/app_image.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
 import 'package:mobile_app/presentation/onboarding/pages/onboarding_screen.dart';
+import 'package:mobile_app/presentation/onboarding/widgets/page_three.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -41,9 +42,11 @@ Future<void> redirect() async {
   final entryPoint = preferences.getBool('entryPoint') ?? false;
   final loggedIn = preferences.getBool('loggedIn') ?? false;
 
-  // if (entryPoint && !loggedIn){
-  //   defa
-  // }
+  if (entryPoint && !loggedIn){
+    defaultScreen = const PageThree();
+  } else {
+    
+  }
 
-  Get.off(defaultScreen);
+  Get.off(()=> defaultScreen);
 }

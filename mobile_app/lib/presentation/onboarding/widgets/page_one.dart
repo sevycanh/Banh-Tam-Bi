@@ -25,7 +25,7 @@ class PageOne extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  "Welcome",
+                  "Bắt Đầu",
                   style: TextStyle(
                       fontSize: 30.sp,
                       color: Color(AppColors.kLight.value),
@@ -37,7 +37,7 @@ class PageOne extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.0.w),
                   child: Text(
-                      'We help you find your dream job according to your skills, location and preference to build your career',
+                      'Bánh tằm bì là món ăn làm từ gạo của người Việt. Đây là một món ăn có thể dùng ăn vặt hoặc ăn no đều được, phổ biến ở tỉnh miền nam như Đồng Tháp, Bạc Liêu.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 14.sp,

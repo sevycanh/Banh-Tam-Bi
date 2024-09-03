@@ -25,7 +25,7 @@ class PageTwo extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  "Welcome 2",
+                  "Giới Thiệu",
                   style: TextStyle(
                       fontSize: 30.sp,
                       color: Color(AppColors.kLight.value),
@@ -37,7 +37,7 @@ class PageTwo extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.0.w),
                   child: Text(
-                      'We help you find your dream job according to your skills, location and preference to build your career',
+                      'Bánh Tằm Thầy Ba là một thương hiệu được xây dựng bởi Thầy Giáo Ba với mong muốn mang lại các món ăn đặc sản Miền Tây Nam Bộ, trong đó đặc biệt là món Bánh Tằm Bì.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 14.sp,

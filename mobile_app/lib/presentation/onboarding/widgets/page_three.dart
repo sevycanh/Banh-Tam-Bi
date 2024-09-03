@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/configs/assets/app_image.dart';
+import 'package:mobile_app/presentation/auth/pages/login.dart';
+import 'package:mobile_app/presentation/auth/pages/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../common/custom_outline_btn.dart';
+import '../../../common/outline_btn.dart';
 import '../../../configs/theme/app_colors.dart';
 
 class PageThree extends StatelessWidget {
@@ -27,9 +29,9 @@ class PageThree extends StatelessWidget {
               height: 20.h,
             ),
             Text(
-              "Welcome 3",
+              "Xin Chào Quý Khách",
               style: TextStyle(
-                  fontSize: 30.sp,
+                  fontSize: 25.sp,
                   color: Color(AppColors.kLight.value),
                   fontWeight: FontWeight.w600),
             ),
@@ -39,7 +41,7 @@ class PageThree extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w),
               child: Text(
-                "Create by DecadeXD",
+                "Created by SevyCanh",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 14.sp,
@@ -48,7 +50,7 @@ class PageThree extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20.h,
+              height: 50.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -58,7 +60,7 @@ class PageThree extends StatelessWidget {
                     final SharedPreferences preferences =
                         await SharedPreferences.getInstance();
                     await preferences.setBool('entryPoint', true);
-                    // Get.to(() => const LoginPage());
+                    Get.to(() => const RegisterPage());
                   },
                   text: "Đăng ký",
                   width: MediaQuery.of(context).size.width * 0.4,
@@ -67,7 +69,7 @@ class PageThree extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Get.to(() => const RegistrationPage());
+                    Get.to(() => const LoginPage());
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.4,
@@ -86,16 +88,17 @@ class PageThree extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
+            const Spacer(),
+            Text(
+                "Quên mật khẩu?",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Color(AppColors.kLight.value),
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
               height: 30.h,
             ),
-            Text(
-              "Quên mật khẩu?",
-              style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Color(AppColors.kLight.value),
-                  fontWeight: FontWeight.w400),
-            )
           ],
         ),
       ),
