@@ -12,6 +12,8 @@ import 'package:mobile_app/models/request/auth/login_model.dart';
 import 'package:mobile_app/presentation/auth/cubit/login_cubit.dart';
 import 'package:mobile_app/presentation/auth/pages/register.dart';
 
+import '../../home/pages/home_page.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -58,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor: Color(AppColors.kOrange.value)),
                 );
               } else if (state is LoginSuccess) {
-                // Get.off(()=> HomePage());
+                Get.off(()=> const HomePage());
               }
             },
             builder: (context, state) {
