@@ -81,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
               AppImages.logoMain,
               scale: 6,
             ),
-            child: GestureDetector(
+            leading: GestureDetector(
               onTap: () {
                 Get.back();
               },

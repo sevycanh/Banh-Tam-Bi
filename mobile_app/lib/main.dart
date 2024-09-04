@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
+import 'package:mobile_app/presentation/application/cubit/application_cubit.dart';
 import 'package:mobile_app/presentation/auth/cubit/login_cubit.dart';
 import 'package:mobile_app/presentation/auth/cubit/register_cubit.dart';
 import 'package:mobile_app/presentation/onboarding/cubit/onboarding_cubit.dart';
@@ -12,7 +13,8 @@ void main() {
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (context) => OnboardingCubit()),
     BlocProvider(create: (context) => LoginCubit()),
-    BlocProvider(create: (context) => RegisterCubit())
+    BlocProvider(create: (context) => RegisterCubit()),
+    BlocProvider(create: (context) => ApplicationCubit())
   ], child: const MyApp()));
 }
 

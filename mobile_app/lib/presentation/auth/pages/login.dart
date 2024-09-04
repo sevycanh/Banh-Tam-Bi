@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
               AppImages.logoMain,
               scale: 6,
             ),
-            child: GestureDetector(
+            leading: GestureDetector(
               onTap: () {
                 Get.back();
               },

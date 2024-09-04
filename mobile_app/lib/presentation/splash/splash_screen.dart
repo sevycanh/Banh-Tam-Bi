@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/configs/assets/app_image.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
+import 'package:mobile_app/presentation/application/pages/application_page.dart';
 import 'package:mobile_app/presentation/onboarding/pages/onboarding_screen.dart';
 import 'package:mobile_app/presentation/onboarding/widgets/page_three.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,8 +45,8 @@ Future<void> redirect() async {
 
   if (entryPoint && !loggedIn){
     defaultScreen = const PageThree();
-  } else {
-    
+  } else if (entryPoint && loggedIn) {
+    defaultScreen = const ApplicationPage();
   }
 
   Get.off(()=> defaultScreen);
