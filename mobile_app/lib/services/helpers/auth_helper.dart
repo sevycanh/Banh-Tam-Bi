@@ -26,6 +26,10 @@ class AuthHelper {
       await preferences.setString('address', address);
       await preferences.setBool('loggedIn', true);
 
+      if (loginResponseFromJson(response.body).address == ""){
+        await preferences.setBool('validAddress', false);
+      }
+
       return true;
     } else {
       return false;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/common/app_bar.dart';
@@ -6,7 +7,9 @@ import 'package:mobile_app/configs/assets/app_image.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
 import 'package:mobile_app/presentation/home/widgets/heading_widget.dart';
 import 'package:mobile_app/presentation/home/widgets/image_slider.dart';
-import 'package:mobile_app/presentation/search/search_screen.dart';
+import 'package:mobile_app/presentation/home/widgets/products.dart';
+import 'package:mobile_app/presentation/search/cubit/search_cubit.dart';
+import 'package:mobile_app/presentation/search/pages/search_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,17 +50,32 @@ class _HomePageState extends State<HomePage> {
                         color: Color(AppColors.primary.value),
                         fontWeight: FontWeight.bold))),
             SizedBox(height: 10.h),
-            HeadingWidget(text: "Món chính", onTap: () {
-              
-            },),
+            HeadingWidget(
+              text: "Món chính",
+              onTap: () {},
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: const ProductsList(categoryId: 1, page: 1),
+            ),
             SizedBox(height: 10.h),
-            HeadingWidget(text: "Món phụ", onTap: () {
-              
-            },),
+            HeadingWidget(
+              text: "Món phụ",
+              onTap: () {},
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: const ProductsList(categoryId: 2, page: 1),
+            ),
             SizedBox(height: 10.h),
-            HeadingWidget(text: "Nước uống", onTap: () {
-              
-            },),
+            HeadingWidget(
+              text: "Nước uống",
+              onTap: () {},
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: const ProductsList(categoryId: 3, page: 1),
+            ),
           ],
         ),
       ),
@@ -109,7 +127,10 @@ PreferredSizeWidget _bottomAppBar() => PreferredSize(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: () {
-            Get.to(() => const SearchPage());
+            Get.to(() => BlocProvider(
+                  create: (context) => SearchCubit(),
+                  child: const SearchPage(),
+                ));
           },
           child: AbsorbPointer(
             child: Container(

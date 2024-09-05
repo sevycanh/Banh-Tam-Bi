@@ -19,12 +19,12 @@ router.delete("/:id", verifyAdmin, ProductController.stopSellingProduct)
 router.post("/stop-selling-products", verifyAdmin, ProductController.stopProductsIsChecked)
 router.post("/resume-selling-products", verifyAdmin, ProductController.resumeProductsIsChecked)
 
-router.get("/mon-chinh", verifyForHeader, ProductController.getMonChinh)
-router.get("/mon-phu", verifyForHeader, ProductController.getMonPhu)
-router.get("/nuoc-uong",verifyForHeader, ProductController.getNuocUong)
-router.get("/:slug", verifyForHeader, ProductController.showInfoProduct)
+router.get("/mon-chinh",  ProductController.getMonChinh)
+router.get("/mon-phu", ProductController.getMonPhu)
+router.get("/nuoc-uong", ProductController.getNuocUong)
+router.get("/:slug", ProductController.showInfoProduct)
 
-router.get("/search/:key", verifyForHeader, ProductController.searchProduct)
+router.get("/search/:key", ProductController.searchProduct)
 
 router.get("/", verifyAdmin, ProductController.getAllProduct)
 

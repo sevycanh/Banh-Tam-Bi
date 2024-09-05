@@ -144,42 +144,37 @@ module.exports = {
   },
 
   searchProduct: (req, res) => {
+    const pageSize = 6;
+    const page = req.query.page || 1;
+
+    const skipProducts = (page - 1) * pageSize;
     Product.find({
       name: { $regex: req.params.key, $options: "i" },
       deleted: false,
     })
+      .skip(skipProducts)
+      .limit(pageSize)
       .then((products) => {
-        res.render("product/search", {
-          data: {
-            isAdmin:
-              req.data && req.data.isAdmin !== undefined
-                ? req.data.isAdmin
-                : -1,
-            id: req.data && req.data.id !== undefined ? req.data.id : -1,
-          },
-          products: multipleMongooseToObject(products),
-        });
+        return res.status(200).json(products);
       })
       .catch((err) => {
-        res.status(500).json("Lỗi tìm sản phẩm");
+        return res.status(500).json(err);
       });
   },
 };
 
 const getProductsByCategoryId = (req, res, categoryId) => {
-  Product.find({ categoryId: categoryId })
+  const pageSize = 6;
+  const page = req.query.page || 1;
+
+  const skipProducts = (page - 1) * pageSize;
+  Product.find({ categoryId: categoryId, deleted: false })
+    .skip(skipProducts)
+    .limit(pageSize)
     .then((products) => {
-      res.render("home/products", {
-        products: multipleMongooseToObject(products),
-        categoryId: categoryId,
-        data: {
-          isAdmin:
-            req.data && req.data.isAdmin !== undefined ? req.data.isAdmin : -1,
-          id: req.data && req.data.id !== undefined ? req.data.id : -1,
-        },
-      });
+      return res.status(200).json(products);
     })
     .catch(() => {
-      res.status(500).json("Lỗi lấy sản phẩm");
+      return res.status(500).json("Lỗi lấy sản phẩm");
     });
 };

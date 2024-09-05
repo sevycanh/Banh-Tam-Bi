@@ -61,7 +61,7 @@ module.exports = {
           }
         );
 
-        const { password, __v, createAt, ...other } = user._doc;
+        const { password, __v, createdAt, ...other } = user._doc;
 
         return res.status(200).json({
           ...other,
