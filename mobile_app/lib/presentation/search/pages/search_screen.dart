@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/common/app_bar.dart';
 import 'package:mobile_app/configs/assets/app_image.dart';
+import 'package:mobile_app/models/response/products/products_res.dart';
 import 'package:mobile_app/presentation/search/cubit/search_cubit.dart';
 
 import '../../../configs/theme/app_colors.dart';
@@ -20,20 +21,43 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  bool isLoadingData = false;
+  bool _canLoadMore = true;
+  List<ProductResponse> productsList = [];
+  int _page = 1;
 
   @override
   void initState() {
     super.initState();
     // Request focus khi trang được tạo
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(_focusNode);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   FocusScope.of(context).requestFocus(_focusNode);
+    // });
+    _focusNode.requestFocus();
+
+    _scrollController.addListener(
+      () {
+        if (!_scrollController.hasClients || isLoadingData) return;
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+              
+          _canLoadMore = true;
+
+          isLoadingData = true;
+          _page += 1;
+          context.read<SearchCubit>().searchProducts(_controller.text, _page);
+          isLoadingData = false;
+        }
+      },
+    );
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -64,9 +88,14 @@ class _SearchPageState extends State<SearchPage> {
                 prefixIcon: const Icon(Icons.search),
                 contentPadding: EdgeInsets.only(top: 10.h),
               ),
-              onSubmitted: (value) {
-                if (value != ""){
-                context.read<SearchCubit>().searchProducts(value, 1);
+              onEditingComplete: () {
+                if (_controller.text != "") {
+                  _focusNode.unfocus();
+                  productsList.clear();
+                  _page = 1;
+                  context.read<SearchCubit>().searchProducts(
+                      _controller.text, _page,
+                      isLoadMore: false);
                 }
               },
             ),
@@ -75,28 +104,46 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: BlocBuilder<SearchCubit, SearchState>(
         builder: (context, state) {
-          if (state is SearchLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+          if (state is SearchInitial) {
+            return Center(child: Image.asset(AppImages.searchBackground));
+          } else if (state is SearchLoading) {
+            return const Center(child: CircularProgressIndicator());
           } else if (state is SearchLoadedFailure) {
-            return Center(
-              child: Text(state.message),
-            );
+            return Center(child: Text(state.message));
           } else if (state is SearchLoaded) {
-            return Padding(
+            if (state.productsList.isNotEmpty) {
+              productsList.addAll(state.productsList);
+              if (state.productsList.length < 6) {
+                _canLoadMore = false;
+              } else {
+                _canLoadMore = true;
+              }
+            } else {
+              _canLoadMore = false;
+            }
+          }
+          return CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              // CupertinoSliverRefreshControl(
+              //       onRefresh: _refresh
+              //   ),
+              SliverPadding(
                 padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
-                child: GridView.builder(
-                  itemCount: state.productsList.length,
+                sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75, // Điều chỉnh tỷ lệ để thay đổi chiều cao
-                      mainAxisSpacing: 5.sp,
-                      crossAxisSpacing: 5.sp),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Card(
+                    crossAxisCount: 2,
+                    childAspectRatio:
+                        0.75, // Điều chỉnh tỷ lệ để thay đổi chiều cao
+                    mainAxisSpacing: 5.sp,
+                    crossAxisSpacing: 5.sp,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: productsList.length,
+                    (context, index) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Card(
                           child: Padding(
                             padding: EdgeInsets.all(8.sp),
                             child: Column(
@@ -108,7 +155,7 @@ class _SearchPageState extends State<SearchPage> {
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: NetworkImage(
-                                              state.productsList[index].image,
+                                              productsList[index].image,
                                             ))),
                                   ),
                                 ),
@@ -116,7 +163,7 @@ class _SearchPageState extends State<SearchPage> {
                                   height: 10.h,
                                 ),
                                 Text(
-                                  state.productsList[index].name,
+                                  productsList[index].name,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14.sp),
@@ -127,7 +174,7 @@ class _SearchPageState extends State<SearchPage> {
                                   height: 5.h,
                                 ),
                                 Text(
-                                  "${NumberFormat("#,##0", "vi_VN").format(int.parse(state.productsList[index].price))}đ",
+                                  "${NumberFormat("#,##0", "vi_VN").format(int.parse(productsList[index].price))}đ",
                                   style: TextStyle(
                                       color: Color(AppColors.kOrange.value),
                                       fontWeight: FontWeight.w400,
@@ -137,12 +184,20 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ),
                         ),
-                    );
-                  },
-                ));
-          }
-
-          return Center(child: Image.asset(AppImages.searchBackground));
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SliverPadding(
+                  padding: EdgeInsets.all(10.h),
+                  sliver: SliverToBoxAdapter(
+                    child: _canLoadMore
+                        ? const Center(child: CircularProgressIndicator())
+                        : const Center(child: Text("Đã hết sản phẩm")),
+                  ))
+            ],
+          );
         },
       ),
     );

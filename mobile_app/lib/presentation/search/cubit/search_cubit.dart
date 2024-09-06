@@ -9,16 +9,33 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchInitial());
 
-  Future searchProducts(String key, int page) async {
-    emit(SearchLoading());
+  Future searchProducts(String key, int page, {bool isLoadMore = true}) async {
+    if (!isLoadMore) {
+      emit(SearchLoading());
+    }
+
     try {
-      var response = await ProductHelper.searchProducts(key, page).timeout(const Duration(seconds: 15));
-      if (response.isNotEmpty){
-        emit(SearchLoaded(productsList: response));
-      } else {
+      var response = await ProductHelper.searchProducts(key, page)
+          .timeout(const Duration(seconds: 15));
+
+      emit(SearchLoaded(productsList: response));
+
+      if (response.isEmpty && !isLoadMore) {
         emit(SearchLoadedFailure(message: "Không tìm thấy sản phẩm phù hợp"));
       }
-    } on TimeoutException{
+    } on TimeoutException {
+      emit(SearchLoadedFailure(message: "Có lỗi trong quá trình tìm kiếm"));
+    } catch (e) {
+      emit(SearchLoadedFailure(message: "Lỗi tìm kiếm sản phẩm"));
+    }
+  }
+
+  Future loadingMoreProducts(String key, int page) async {
+    try {
+      var response = await ProductHelper.searchProducts(key, page)
+          .timeout(const Duration(seconds: 15));
+      emit(SearchLoaded(productsList: response));
+    } on TimeoutException {
       emit(SearchLoadedFailure(message: "Có lỗi trong quá trình tìm kiếm"));
     } catch (e) {
       emit(SearchLoadedFailure(message: "Lỗi tìm kiếm sản phẩm"));
