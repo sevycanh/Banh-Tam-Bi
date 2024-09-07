@@ -5,7 +5,7 @@ import 'package:mobile_app/services/config.dart';
 class ProductHelper {
   static var client = http.Client();
 
-  static Future<List<ProductResponse>> getMainDish(
+  static Future<List<ProductResponse>> getProducts(
       int categoryId, int page) async {
     String? route;
     if (categoryId == 1) {

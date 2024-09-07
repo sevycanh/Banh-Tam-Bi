@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
-import 'package:mobile_app/presentation/home/cubit/product_cubit.dart';
+import 'package:mobile_app/presentation/home_and_product/cubit/product_cubit.dart';
+import 'package:mobile_app/presentation/home_and_product/pages/product_detail.dart';
 
 class ProductsList extends StatelessWidget {
   const ProductsList({super.key, required this.page, required this.categoryId});
@@ -13,7 +15,7 @@ class ProductsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProductCubit()..getMainDish(categoryId, page),
+      create: (context) => ProductCubit()..getProducts(categoryId, page),
       child: BlocBuilder<ProductCubit, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading) {
@@ -31,7 +33,10 @@ class ProductsList extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() =>
+                            ProductDetailPage(product: state.products[index]));
+                      },
                       child: SizedBox(
                         width: 150.w,
                         child: Card(
@@ -46,7 +51,8 @@ class ProductsList extends StatelessWidget {
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: NetworkImage(
-                                                state.products[index].image,))),
+                                              state.products[index].image,
+                                            ))),
                                   ),
                                 ),
                                 SizedBox(

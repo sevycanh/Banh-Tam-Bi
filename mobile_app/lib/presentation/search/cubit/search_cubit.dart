@@ -29,16 +29,4 @@ class SearchCubit extends Cubit<SearchState> {
       emit(SearchLoadedFailure(message: "Lỗi tìm kiếm sản phẩm"));
     }
   }
-
-  Future loadingMoreProducts(String key, int page) async {
-    try {
-      var response = await ProductHelper.searchProducts(key, page)
-          .timeout(const Duration(seconds: 15));
-      emit(SearchLoaded(productsList: response));
-    } on TimeoutException {
-      emit(SearchLoadedFailure(message: "Có lỗi trong quá trình tìm kiếm"));
-    } catch (e) {
-      emit(SearchLoadedFailure(message: "Lỗi tìm kiếm sản phẩm"));
-    }
-  }
 }

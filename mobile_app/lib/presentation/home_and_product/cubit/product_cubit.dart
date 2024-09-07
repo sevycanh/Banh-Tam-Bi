@@ -9,15 +9,16 @@ part 'product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductLoading());
 
-  Future<void> getMainDish(int categoryId,int page) async {
-    emit(ProductLoading());
+  Future getProducts(int categoryId, int page, {bool isLoadMore = true}) async {
+    if (!isLoadMore) {
+      emit(ProductLoading());
+    }
     try {
-      var response = await ProductHelper.getMainDish(categoryId, page).timeout(const Duration(seconds: 10));
-
-      if (response.isNotEmpty) {
-        emit(ProductLoaded(products: response));
-      } else {
-        emit(ProductLoadedFailure(message: "Không có sản phẩm nào"));
+      var response = await ProductHelper.getProducts(categoryId, page)
+          .timeout(const Duration(seconds: 10));
+      emit(ProductLoaded(products: response));
+      if (response.isEmpty && !isLoadMore) {
+        emit(ProductLoadedFailure(message: "Không tìm thấy sản phẩm phù hợp"));
       }
     } on TimeoutException {
       emit(ProductLoadedFailure(message: "Có lỗi xảy ra vui lòng thử lại!"));

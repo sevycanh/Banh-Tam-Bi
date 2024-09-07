@@ -17,5 +17,3 @@ final class SearchLoadedFailure extends SearchState {
 
   SearchLoadedFailure({required this.message});
 }
-
-final class SearchLoadedNoMoreProducts extends SearchState {}

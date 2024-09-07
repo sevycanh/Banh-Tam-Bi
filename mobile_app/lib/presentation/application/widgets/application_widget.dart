@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
-import 'package:mobile_app/presentation/home/pages/home_page.dart';
+import 'package:mobile_app/presentation/home_and_product/pages/home_page.dart';
 
 Widget buildPage(int index) {
   List widgets = [

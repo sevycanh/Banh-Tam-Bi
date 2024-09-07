@@ -10,6 +10,7 @@ import 'package:mobile_app/models/response/products/products_res.dart';
 import 'package:mobile_app/presentation/search/cubit/search_cubit.dart';
 
 import '../../../configs/theme/app_colors.dart';
+import '../../home_and_product/pages/product_detail.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -142,7 +143,10 @@ class _SearchPageState extends State<SearchPage> {
                     childCount: productsList.length,
                     (context, index) {
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(() =>
+                            ProductDetailPage(product: productsList[index]));
+                        },
                         child: Card(
                           child: Padding(
                             padding: EdgeInsets.all(8.sp),

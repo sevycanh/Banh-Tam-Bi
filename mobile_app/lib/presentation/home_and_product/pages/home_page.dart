@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:mobile_app/common/app_bar.dart';
 import 'package:mobile_app/configs/assets/app_image.dart';
 import 'package:mobile_app/configs/theme/app_colors.dart';
-import 'package:mobile_app/presentation/home/widgets/heading_widget.dart';
-import 'package:mobile_app/presentation/home/widgets/image_slider.dart';
-import 'package:mobile_app/presentation/home/widgets/products.dart';
+import 'package:mobile_app/presentation/home_and_product/cubit/product_cubit.dart';
+import 'package:mobile_app/presentation/home_and_product/pages/product_page.dart';
+import 'package:mobile_app/presentation/home_and_product/widgets/heading_widget.dart';
+import 'package:mobile_app/presentation/home_and_product/widgets/image_slider.dart';
+import 'package:mobile_app/presentation/home_and_product/widgets/products.dart';
 import 'package:mobile_app/presentation/search/cubit/search_cubit.dart';
 import 'package:mobile_app/presentation/search/pages/search_screen.dart';
 
@@ -52,7 +54,12 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 10.h),
             HeadingWidget(
               text: "Món chính",
-              onTap: () {},
+              onTap: () {
+                Get.to(() => BlocProvider(
+                      create: (context) => ProductCubit(),
+                      child: const ProductsPage(categoryId: 1),
+                    ));
+              },
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
@@ -61,7 +68,12 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 10.h),
             HeadingWidget(
               text: "Món phụ",
-              onTap: () {},
+              onTap: () {
+                Get.to(() => BlocProvider(
+                      create: (context) => ProductCubit(),
+                      child: const ProductsPage(categoryId: 2),
+                    ));
+              },
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
@@ -70,7 +82,12 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 10.h),
             HeadingWidget(
               text: "Nước uống",
-              onTap: () {},
+              onTap: () {
+                Get.to(() => BlocProvider(
+                      create: (context) => ProductCubit(),
+                      child: const ProductsPage(categoryId: 3),
+                    ));
+              },
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
